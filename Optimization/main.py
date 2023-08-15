@@ -41,6 +41,7 @@ def main(weather_dataset, gcr, acdc, year, ac):
     #TODO Setting up a cache to avoid extra API calls when we don't need them
 
     #TODO API Call
+
     json_data = api_call.api_call_func(os.environ["API_KEY"], src_energy_manual_url, src_params, weather_df, gcr, acdc, year ,ac)
 
     #TODO API Return Processing
