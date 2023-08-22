@@ -6,6 +6,7 @@ import numpy as np
 
 cwd = os.getcwd()
 filename = "ElevenMile_TimeSeries_ACP__20230728.csv"
+# filename = "ElevenMile_TimeSeries_ACP__20230728_adjusted.csv"
 filepath = os.path.join(cwd, "Data", "ElevenMile", filename)
 df = pd.read_csv(filepath)
 # print(df)
@@ -24,7 +25,7 @@ list_of_years = list(df.index.year.unique())
 d = {}
 
 for year in list_of_years:
-    d[year] = df.loc[f"{year}-1-1":f"{year}-12-31"]
+    d[year] = df.loc[f"{year}-1-1 1:00":f"{year+1}-1-1 0:00"] # need to adjust this to make the year extend to the next january 1st at midnight
 
 # TODO implement optimization
 json_list = []
@@ -49,6 +50,8 @@ except FileNotFoundError:
     for i in d_list:
         year = i
         try:
+            if len(d[i]) > 8760:
+                d[i] = d[i].iloc[:-24]
             json_dict[year] = (op.main(d[i], gcr, acdc, year, ac))
         except:
             json_dict[year] = []
@@ -117,15 +120,15 @@ for year in list_of_years:
         list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
     except KeyError:
         try:
-            list_of_ghi_dfs.append(pd.DataFrame(json_dict[str(year)]["Hourly"]).swapaxes("index", "columns")["GlobHor"])
+            list_of_ghi_dfs.append(pd.DataFrame(json_dict[str(year)]["Hourly"]).swapaxes("index", "columns")["GlobalHor"])
         except KeyError:
             list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
         except TypeError:
             list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
 
 
-hourly_ghi_dfs = pd.concat(list_of_ghi_dfs, axis=1)
-hourly_ghi_dfs.to_csv("GHI_Hourly_exports.csv")
+hourly_dfs = pd.concat(list_of_ghi_dfs, axis=1)
+hourly_dfs.to_csv("GHI_Hourly_exports.csv")
 
 # todo make outputs for the data
 
