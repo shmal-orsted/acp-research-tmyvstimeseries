@@ -91,6 +91,7 @@ dataset_p50 = df_of_p50s.mean()
 
 list_of_hourly_dfs = []
 
+# make 8760 dataset output
 for year in list_of_years:
     try:
         list_of_hourly_dfs.append(pd.DataFrame(json_dict[year]["Hourly"]).swapaxes("index", "columns")["E_Grid"])
@@ -104,13 +105,27 @@ for year in list_of_years:
         except TypeError:
             list_of_hourly_dfs.append(pd.DataFrame(data=[(0)], columns=["E_Grid"]))
 
-# count = 0
-# for x in list_of_hourly_dfs:
-#     x.rename(list_of_years[count])
-#     count = count + 1
-
 hourly_dfs = pd.concat(list_of_hourly_dfs, axis=1)
 hourly_dfs.to_csv("8760_exports.csv")
+
+list_of_ghi_dfs = []
+# make GHI dataset outputs
+for year in list_of_years:
+    try:
+        list_of_ghi_dfs.append(pd.DataFrame(json_dict[year]["Hourly"]).swapaxes("index", "columns")["GlobHor"])
+    except TypeError:
+        list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
+    except KeyError:
+        try:
+            list_of_ghi_dfs.append(pd.DataFrame(json_dict[str(year)]["Hourly"]).swapaxes("index", "columns")["GlobHor"])
+        except KeyError:
+            list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
+        except TypeError:
+            list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
+
+
+hourly_ghi_dfs = pd.concat(list_of_ghi_dfs, axis=1)
+hourly_ghi_dfs.to_csv("GHI_Hourly_exports.csv")
 
 # todo make outputs for the data
 
