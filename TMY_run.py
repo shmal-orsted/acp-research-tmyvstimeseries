@@ -7,11 +7,11 @@ import numpy as np
 cwd = os.getcwd()
 filename = "ElevenMile_TMY_ACP__20230728.csv"
 filepath = os.path.join(cwd, "Data", "ElevenMile", filename)
-df = pd.read_csv(filepath, header=11)
+df = pd.read_csv(filepath)
 # print(df)
 
 # todo seperate years from the solar data
-df['Datetime'] = pd.to_datetime(df["date time"])
+df["Datetime"] = pd.to_datetime(df.index)
 df = df.set_index('Datetime')
 
 # TODO implement optimization
@@ -49,12 +49,12 @@ list_of_p50s = []
 
 # add those p50 to a dataframe
 try:
-    list_of_p50s.append(json_dict[year]["SummaryAnnual"]["netEnergy"])
+    list_of_p50s.append(json_dict["SummaryAnnual"]["netEnergy"])
 except TypeError:
     list_of_p50s.append(np.NaN)
 except KeyError:
     try:
-        list_of_p50s.append(json_dict[str(year)]["SummaryAnnual"]["netEnergy"])
+        list_of_p50s.append(json_dict["SummaryAnnual"]["netEnergy"])
     except KeyError:
         list_of_p50s.append(np.NaN)
     except TypeError:
@@ -69,12 +69,12 @@ list_of_hourly_dfs = []
 
 # make 8760 dataset output
 try:
-    list_of_hourly_dfs.append(pd.DataFrame(json_dict[year]["Hourly"]).swapaxes("index", "columns")["E_Grid"])
+    list_of_hourly_dfs.append(pd.DataFrame(json_dict["Hourly"]).swapaxes("index", "columns")["E_Grid"])
 except TypeError:
     list_of_hourly_dfs.append(pd.DataFrame(data=[(0)], columns=["E_Grid"]))
 except KeyError:
     try:
-        list_of_hourly_dfs.append(pd.DataFrame(json_dict[str(year)]["Hourly"]).swapaxes("index", "columns")["E_Grid"])
+        list_of_hourly_dfs.append(pd.DataFrame(json_dict["Hourly"]).swapaxes("index", "columns")["E_Grid"])
     except KeyError:
         list_of_hourly_dfs.append(pd.DataFrame(data=[(0)], columns=["E_Grid"]))
     except TypeError:
@@ -86,12 +86,12 @@ hourly_dfs.to_csv("8760_exports_TMY.csv")
 list_of_ghi_dfs = []
 # make GHI dataset outputs
 try:
-    list_of_ghi_dfs.append(pd.DataFrame(json_dict[year]["Hourly"]).swapaxes("index", "columns")["GlobHor"])
+    list_of_ghi_dfs.append(pd.DataFrame(json_dict["Hourly"]).swapaxes("index", "columns")["GlobHor"])
 except TypeError:
     list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
 except KeyError:
     try:
-        list_of_ghi_dfs.append(pd.DataFrame(json_dict[str(year)]["Hourly"]).swapaxes("index", "columns")["GlobHor"])
+        list_of_ghi_dfs.append(pd.DataFrame(json_dict["Hourly"]).swapaxes("index", "columns")["GlobHor"])
     except KeyError:
         list_of_ghi_dfs.append(pd.DataFrame(data=[(0)], columns=["GHI"]))
     except TypeError:

@@ -51,13 +51,11 @@ def main(weather_dataset, gcr, acdc, year, ac):
     # plotting.plot_data(json_dict)
     return json_data
     #TODO Export Data, summarized and organized clearly
-
-
     #TODO GUI to do all this
-
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
+
 
