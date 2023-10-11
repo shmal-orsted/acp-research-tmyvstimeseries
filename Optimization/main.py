@@ -28,7 +28,7 @@ def main(weather_dataset, gcr, acdc, year, ac):
     # weather data file - just working for csv atm, will be changes
     weather_df = weather_dataset
 
-    weather_df = weather_df.rename(columns={"GHI (W m-2)": "GHI", "DIF (W m-2)": "DHI", "temperature at 2m (degrees C)": "Tamb", "windspeed at 10m (m s-1)": "Wspd" })
+    # weather_df = weather_df.rename(columns={"GHI (W m-2)": "GHI", "DIF (W m-2)": "DHI", "temperature at 2m (degrees C)": "Tamb", "windspeed at 10m (m s-1)": "Wspd" })
 
     # pd.read_csv(weather_dataset, skiprows=3, names=['GHI', 'DHI', 'Tamb', 'Wspd'])
 
@@ -42,14 +42,14 @@ def main(weather_dataset, gcr, acdc, year, ac):
 
     #TODO API Call
 
-    json_data = api_call.api_call_func(os.environ["API_KEY"], src_energy_manual_url, src_params, weather_df, gcr, acdc, year, ac)
+    json_data, src_request_response = api_call.api_call_func(os.environ["API_KEY"], src_energy_manual_url, src_params, weather_df, gcr, acdc, year, ac)
 
     #TODO API Return Processing
 
     #TODO Imaging and Visualization (pyplot Graphs)
 
     # plotting.plot_data(json_dict)
-    return json_data
+    return json_data, src_request_response
     #TODO Export Data, summarized and organized clearly
     #TODO GUI to do all this
 

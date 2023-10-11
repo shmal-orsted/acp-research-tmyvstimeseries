@@ -25,6 +25,9 @@ def api_call_func(api_key, api_url, src_args, weather_df, gcr, acdc, year, ac):
     x = src_args["DCCapacity"]
     y = src_args["GCR"]
 
+    # adjusting df call to just take required columns
+    weather_df = weather_df[["GHI", "DHI", "Tamb", "Wspd"]]
+
     #TODO add functionality to choose dat or csv file for api call
 
     #temp adding caching for testing
@@ -49,6 +52,8 @@ def api_call_func(api_key, api_url, src_args, weather_df, gcr, acdc, year, ac):
     # )
 
     if (src_energy_manual_request.status_code >= 400):
+        print(f"API request failed. Error status code: {src_energy_manual_request.status_code}\n" +
+              f"Reason: {src_energy_manual_request.reason}\n" + f"Message: {src_energy_manual_request.text}")
         raise Exception(f"API request failed. Error status code: {src_energy_manual_request.status_code}\n" +
                         f"Reason: {src_energy_manual_request.reason}\n" + f"Message: {src_energy_manual_request.text}")
 
@@ -133,7 +138,7 @@ def api_call_func(api_key, api_url, src_args, weather_df, gcr, acdc, year, ac):
         outputs_dict[f"{year}"] = json_dict
         outputs_list.append(json_dict)
 
-    return json_dict
+    return json_dict, src_energy_manual_request
     # json_dict = {}  # Placeholder for json-formatted response if successful
 
 

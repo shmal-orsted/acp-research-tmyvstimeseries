@@ -1,8 +1,8 @@
 src_energy_manual_args = {
-            'Latitude': 42.8717,
-            'Longitude': -85.0272,
-            'Altitude': 447,
-            'ProjRefID': 'Portland Road',
+            'Latitude': 32.770340,
+            'Longitude': -111.603,
+            'Altitude': 467,
+            'ProjRefID': 'Eleven Mile',
             'ACCapacity': 100000,
             'DCCapacity': 0,
             'Mounting': 'ground_1axis',
@@ -18,8 +18,8 @@ src_energy_manual_args = {
             'DCDerate': 0.0,
             'Availability': 1.0,
             'Curtailment': 0.00,
-            'MonthlySoilingLoss': '0.06;0.04;0.02;0.01;0.01;0.01;0.01;0.01;0.01;0.01;0.01;0.05',
-            'MonthlyAlbedo': '0.6;0.6;0.4;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.5'
+            'MonthlySoilingLoss': '0.02;0.02;0.02;0.02;0.04;0.06;0.06;0.02;0.03;0.03;0.03;0.02',
+            'MonthlyAlbedo': '0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2;0.2'
         }
 
 csv_filename = "inputs/sample_weather_data.csv"
